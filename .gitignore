@@ -1,0 +1,11 @@
+models/database/photos/
+.idea/
+__pycache__/
+db_photo.sqlite3
+models/database/db_photo.sqlite3
+models/gallery/__pycache__/
+models/login/__pycache__/
+test.py
+upload/
+/logowanie_i_rejestracja/
+../

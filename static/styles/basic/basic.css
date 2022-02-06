@@ -1,0 +1,17 @@
+
+body {
+    display: none;
+}
+
+.error_msg {
+   color:red;
+}
+
+.align_center {
+   text-align: center;
+};
+
+.control_size {
+    height:50px;
+};
+

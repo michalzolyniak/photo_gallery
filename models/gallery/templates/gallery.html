@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--    height="200" width="420"-->
+    <main>
+        <br><br>
+        <section class="py-5 text-center container">
+          <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+              <h1 class="fw-light">Gallery</h1>
+            </div>
+          </div>
+           <form method="post" enctype="multipart/form-data" id="select_user">
+          <div class="row d-flex justify-content-center mt-100">
+            <div class="col-md-6"> <select id="choices-multiple-remove-button"  name ="select_user" onchange="filter_user()" placeholder="Select users" multiple>
+                  {% set users = db_users %}
+                  {% for user in users %}
+                      <option value="{{user}}" {% if user in filtered_users %} selected="selected"{% endif %} >{{user}}</option>
+                  {% endfor %}
+            </select> </div>
+        </div>
+        </form>
+        </section>
+        <div class="album py-5 bg-light">
+          <div class="container">
+              {% for key, value in photo_data.items() %}
+                  <h2>{{key}}</h2>
+                    <br>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 photos">
+                      {% if value[0] is iterable and value[0] is not string  %}
+                        {% for list_data in value %}
+                            <div class="col">
+                              <div class="card shadow-sm h-100">
+                                <img src="{{url_for('gl.uploaded', filename=list_data[0])}}" height="200" width="420">
+                                <div class="card-body">
+                                  <p class="card-text">{{list_data[1]}}</p>
+                                  <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onClick="makeFullScreen(event)" class="btn btn-sm btn-outline-secondary">View</button>
+                                        {% if user.name == key %}
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">Posted: {{list_data[2]}}</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        {% endfor %}
+                      {% else %}
+                        <div class="col">
+                            <div class="card shadow-sm h-100">
+                                <img src="{{url_for('gl.uploaded', filename=value[0])}}" height="200" width="420">
+                                <div class="card-body">
+                                  <p class="card-text">{{value[1]}}</p>
+                                  <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                      <button type="button"  onClick="makeFullScreen(event)" class="btn btn-sm btn-outline-secondary">View</button>
+                                        {% if user.name == key %}
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">Posted: {{value[2]}}</small>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                      {% endif %}
+                    </div>
+                    <br>
+              {% endfor %}
+          </div>
+        </div>
+      </main>
+{% endblock %}

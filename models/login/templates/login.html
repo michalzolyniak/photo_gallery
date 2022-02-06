@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+       <div class="d-flex justify-content-md-c enter align-items-center vh-100">
+            <div class="col-sm-2">
+                <form method="post" enctype="multipart/form-data">
+                    <h2 >Login:</h2>
+                    <br>
+                    <input name="name" placeholder="user name" class="form-control form-control-lg" {% if name %} value={{name}} {% endif %}>
+                    <div>
+                        {% for error in form.name.errors %}
+                            <p class="error_msg">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <input name="password"  placeholder="password" class="form-control form-control-lg" type="password" />
+                     <div>
+                        {% for error in form.password.errors %}
+                            <p class="error_msg">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <input type="submit" class="w-100 btn btn-primary btn-lg" value="submit"/>
+                </form>
+            </div>
+        </div>
+    </form>
+{% endblock %}

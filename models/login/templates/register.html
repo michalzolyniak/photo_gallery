@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %} Rejestracja {%endblock%}
+{% block content %}
+     <form method="post" enctype="multipart/form-data">
+        <div class="d-flex justify-content-md-center align-items-center vh-100">
+            <div class="col-sm-2">
+                <h2 >Register:</h2>
+                <br>
+                <input class="form-control form-control-lg" name="name" placeholder="user name" {% if name %} value={{name}} {% endif %}/>
+                <div>
+                    {% for error in form.name.errors %}
+                        <p class="error_msg">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+                <br>
+                <input class="form-control form-control-lg" name="password" type="password" placeholder="password"/>
+                <div>
+                    {% for error in form.password.errors %}
+                        <p class="error_msg">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+                <br>
+                <input class="form-control form-control-lg" name="password2" type="password" placeholder="repeat password"/>
+                <br>
+                <input class="form-control form-control-lg" name="avatar" id="avatar_1" type="file"/>
+                <div>
+                    {% for error in form.avatar.errors %}
+                        <p class="error_msg">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+                <br>
+                <input class="w-100 btn btn-primary btn-lg" type="submit" value ="submit"/>
+                <br>
+                <br>
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <ul>
+                    {% for message in messages %}
+                      <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+     </form>
+
+{% endblock %}

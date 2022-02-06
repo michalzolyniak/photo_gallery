@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Gallery app {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles/bootstrap/bootstrap.min.css">
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/base.js?{{time}}"></script>
+    <script src="/static/js/popper.min.js?{{time}}"></script>
+    <script src="/static/js/choices.min.js?{{time}}"></script>
+    <link rel="stylesheet" type="text/css" href="/static/styles/basic/choices.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('gl.static', filename='/styles/gallery/gallery.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('lg.static', filename='/styles/login/login.css') }}">
+    <link rel="stylesheet" type="text/css" href="/static/styles/basic/basic.css">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      .img-responsive {
+    height: 100px;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+     <nav class="fixed-top">
+      <div class="collapse bg-dark " id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About author:</h4>
+              <p class="text-muted">My name is Michal Zolyniak.
+                This is the first application that I have created in Flask.
+              </p>
+              <p class="text-muted">Enjoy to use!</p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a href="#" class="text-white">Follow on Twitter</a></li>
+                <br>
+                <li><a href="https://www.facebook.com/profile.php?id=100003250791179" class="text-white">Like on Facebook</a></li>
+                <br>
+                <li><a href="michalzolyniak@o2.pl" class="text-white">Email me</a></li>
+              </ul>
+                <h4 class="text-white">Action</h4>
+
+
+                {% if isNewPhoto or isNewCategory or isSettings or isNewPassword %}
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('gl.gallery') }}">Gallery</a></li>
+                    </ul>
+                {% endif %}
+
+                {% if isGallery or isSettings or isNewPassword %}
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('gl.add_photo') }}">Add new photo</a></li>
+                        <br>
+                        <li><a href="{{ url_for('gl.add_category') }}">Add category</a></li>
+                    </ul>
+                {% endif %}
+
+                {% if isNewPhoto  %}
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('gl.add_category') }}">Add category</a></li>
+                    </ul>
+                {% endif %}
+
+                {% if isNewCategory %}
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('gl.add_photo') }}">Add photo<photo></photo></a></li>
+                    </ul>
+                {% endif %}
+
+                {% if isRegister %}
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('lg.login') }}" >Login</a></li>
+                    </ul>
+                {% endif %}
+
+                {% if isGallery or isNewPhoto or isNewCategory or isNewPassword %}
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('lg.user_settings') }}">User settings</a></li>
+                    </ul>
+                {% endif %}
+
+                {% if user.is_login %}
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('lg.logout') }}">Logout</a></li>
+                    </ul>
+                {% else %}
+                    {% if not isRegister %}
+                        <ul class="list-unstyled">
+                            <li><a href="{{ url_for('lg.register') }}" >Register</a></li>
+                        </ul>
+                    {% endif %}
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          {% if user.is_login %}
+            <a href="#" class="navbar-brand d-flex align-items-center">
+            <img src="{{url_for('gl.uploaded', filename=user.avatar)}}" height="100" width="100"
+            alt="awatar użytkownika {{user.name}}">
+              <strong> &nbsp;&nbsp; &nbsp;&nbsp; {{user.name}}</strong>
+            </a>
+          {% else %}
+            <a href="#" class="navbar-brand d-flex align-items-center"></a>
+         {% endif %}
+          <button class="navbar-toggler"  type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+     </nav>
+    </header>
+    <br><br>
+    {% block content %} {% endblock %}
+</body>
+    <script>
+        const nav = document.querySelector('.navbar-collapse')
+
+        document.addEventListener('click', () => {
+          if (nav.classList.contains('show')) {
+            nav.classList.remove('show')
+          }
+        })
+    </script>
+</html>
