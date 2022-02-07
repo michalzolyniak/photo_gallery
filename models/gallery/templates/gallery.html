@@ -30,7 +30,7 @@
                         {% for list_data in value %}
                             <div class="col">
                               <div class="card shadow-sm h-100">
-                                <img src="{{url_for('gl.uploaded', filename=list_data[0])}}" height="200" width="420">
+                                <img src="{{url_for('gl.uploaded', filename=list_data[0])}}" height="200">
                                 <div class="card-body">
                                   <p class="card-text">{{list_data[1]}}</p>
                                   <div class="d-flex justify-content-between align-items-center">
@@ -49,7 +49,7 @@
                       {% else %}
                         <div class="col">
                             <div class="card shadow-sm h-100">
-                                <img src="{{url_for('gl.uploaded', filename=value[0])}}" height="200" width="420">
+                                <img src="{{url_for('gl.uploaded', filename=value[0])}}" height="150">
                                 <div class="card-body">
                                   <p class="card-text">{{value[1]}}</p>
                                   <div class="d-flex justify-content-between align-items-center">

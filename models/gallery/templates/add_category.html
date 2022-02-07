@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-       <div class="d-flex justify-content-md-center align-items-center vh-100">
-            <div class="col-sm-2">
+       <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="col-sm-6 col-md-6 col-lg-2">
                 <form method="post" enctype="multipart/form-data">
                     <input type="text" class="form-control form-control-lg" id="category" name="category" placeholder="category name" {% if category %} value={{category}} {% endif %}>
                     <div>
@@ -26,8 +26,5 @@
                 {% endwith %}
             </div>
         </div>
-        <input name="category" placeholder="category name" {% if category %} value={{category}} {% endif %}/>
-        <input type="submit" value="submit"/>
     </form>
-
 {% endblock %}

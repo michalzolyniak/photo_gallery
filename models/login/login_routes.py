@@ -43,7 +43,7 @@ def user_settings():
 @lg.route('/change_password', methods=('GET', 'POST'))
 def change_password():
     name = User.current().name
-    form = NewPasswordValidation(flask.request.form)
+    form = NewPasswordValidation(CombinedMultiDict((flask.request.files, flask.request.form)))
     if flask.request.method == 'POST' and form.validate():
         password = flask.request.form.get('new_password')
         # user_to_update = User.query.filter_by(username=name).first()
