@@ -5,7 +5,7 @@
                 <form method="post" enctype="multipart/form-data">
                     <h2 >Login:</h2>
                     <br>
-                    <input name="name" placeholder="user name" class="form-control form-control-lg" {% if name %} value={{name}} {% endif %}>
+                    <input name="name" placeholder="user name" class="form-control form-control-lg" {% if name %} value={{user.name}} {% endif %}>
                     <div>
                         {% for error in form.name.errors %}
                             <p class="error_msg">

@@ -3,6 +3,7 @@ from models.database import db_models
 from models.login.login_validators import LoginValidation, RegisterValidation, NewPasswordValidation
 from werkzeug.datastructures import CombinedMultiDict
 from models.login.login_functions import login_required
+from models.database import db_models
 import flask
 
 # blueprint
@@ -42,14 +43,13 @@ def user_settings():
 
 @lg.route('/change_password', methods=('GET', 'POST'))
 def change_password():
-    name = User.current().name
-    form = NewPasswordValidation(CombinedMultiDict((flask.request.files, flask.request.form)))
+    name = flask.request.form.get('name')
+    form = NewPasswordValidation(flask.request.form)
     if flask.request.method == 'POST' and form.validate():
         password = flask.request.form.get('new_password')
-        # user_to_update = User.query.filter_by(username=name).first()
-        # user_to_update.data = {'password': password}
-        # db_models.db.session.commit()
-        flask.flash(f"You have just changed a password")
+        db_models.User.query.filter(db_models.User.username == str(name)).update({'password': password})
+        db_models.db.session.commit()
+        flask.flash(f"You have just changed your password")
     return flask.render_template("change_password.html", isNewPassword=True, form=form, name=name)
 
 
