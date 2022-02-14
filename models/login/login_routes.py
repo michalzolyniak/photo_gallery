@@ -55,19 +55,18 @@ def change_password():
 
 @lg.route('/remove_account', methods=('GET', 'POST'))
 def remove_account():
-    name = flask.request.form.get('name')
     if flask.request.method == 'POST':
         if flask.request.form['action'] == 'Yes':
-            print("test")
-            # db_models.User.query.filter(db_models.User.username == str(name)).update({'password': password})
-            # db_models.db.session.commit()
-            flask.flash(f"You have just changed your password")
-            # flask.session.clear()
-            # return flask.render_template("register.html", isRegister=True, form=form, name=name)
+            users_id = db_models.User.query.filter(db_models.User.username == str(flask.session['name'])).first().id
+            db_models.Photo.query.filter(db_models.Photo.user_id == users_id).delete()
+            db_models.User.query.filter(db_models.User.username == str(flask.session['name'])).delete()
+            db_models.db.session.commit()
+            flask.session.clear()
+            flask.flash(f"Your account has been removed")
+            return flask.redirect('/register')
         elif flask.request.form['action'] == 'No':
-            return flask.redirect('/')
+            return flask.redirect('/user_settings')
     return flask.render_template("remove_account.html", isRemoveAccount=True)
-
 
 
 @lg.route('/logout')
@@ -75,4 +74,3 @@ def remove_account():
 def logout():
     flask.session.clear()
     return flask.redirect('/login')
-
