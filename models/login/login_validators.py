@@ -67,3 +67,27 @@ class NewPasswordValidation(Form):
         if filed.data:
             if self.old_password.data == filed.data:
                 self.new_password.errors += (ValidationError("new password has to be different then old"),)
+
+
+class ChangeUserDataValidation(Form):
+    """
+        Change user data validations
+    """
+
+    new_name = StringField('new_name', [validators.Length(min=5, max=25), validators.Optional()])
+
+    avatar = FileField('avatar', validators=[
+        FileAllowed(['png', 'pdf', 'jpg'], "wrong format!")
+    ])
+
+    @staticmethod
+    def validate_new_name(self, new_name):
+        db_user: db_models.User | None = db_models.User.query.filter_by(username=new_name.data).first()
+        if db_user:
+            self.new_name.errors += (ValidationError("This user already exist"),)
+
+
+    # old_password = StringField('old_password', [validators.DataRequired()])
+    # password_rep = PasswordField('password_rep', [validators.DataRequired()])
+    # new_password = PasswordField('new_password', [validators.Length(min=5, max=15), validators.DataRequired()])
+    # password_rep = PasswordField('password_rep', [validators.Length(min=5, max=15), validators.DataRequired(),

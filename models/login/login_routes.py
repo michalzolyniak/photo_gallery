@@ -1,6 +1,6 @@
 from models.login.user_class import User
 from models.database import db_models
-from models.login.login_validators import LoginValidation, RegisterValidation, NewPasswordValidation
+from models.login.login_validators import LoginValidation, RegisterValidation, NewPasswordValidation, ChangeUserDataValidation
 from werkzeug.datastructures import CombinedMultiDict
 from models.login.login_functions import login_required
 from models.database import db_models
@@ -67,6 +67,32 @@ def remove_account():
         elif flask.request.form['action'] == 'No':
             return flask.redirect('/user_settings')
     return flask.render_template("remove_account.html", isRemoveAccount=True)
+
+
+@lg.route('/change_user_data', methods=('GET', 'POST'))
+def change_user_data():
+    new_name = flask.request.form.get('new_name')
+    avatar = flask.request.files.get("avatar")
+    form = ChangeUserDataValidation(flask.request.form)
+    if flask.request.method == 'POST' and form.validate():
+        if new_name:
+            db_models.User.query.filter(db_models.User.username == str(flask.session['name'])).update({'username': new_name})
+            db_models.db.session.commit()
+        if avatar:
+            db_models.User.query.filter(db_models.User.username == str(new_name)).update({'username': new_name})
+            db_models.db.session.commit()
+        # flask.session['name'] = flask.request.form.get('new_name')
+        if new_name and avatar:
+            flask.session['name'] = new_name
+            flask.flash(f"You have just changed your name and avatar.")
+        elif new_name:
+            flask.session['name'] = new_name
+            flask.flash(f"You have just changed your name.")
+        elif avatar:
+            flask.flash(f"You have just changed your avatar")
+        else:
+            flask.flash(f"Please fill a new name or choose a new avatar")
+    return flask.render_template("user_data.html", isUserData=True, form=form, name=new_name)
 
 
 @lg.route('/logout')
