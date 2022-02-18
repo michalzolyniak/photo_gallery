@@ -88,6 +88,11 @@ def uploaded(filename):
     return flask.send_from_directory(UPLOAD_FOLDER, filename)
 
 
+@gl.route('/uploaded_avatar/<filename>')
+def uploaded_avatar(filename):
+    return flask.send_from_directory(os.path.join(UPLOAD_FOLDER, "avatars"), filename)
+
+
 @gl.app_context_processor
 def inject_user():
     return {

@@ -1,11 +1,14 @@
 from models.login.user_class import User
 from models.database import db_models
+from constants import UPLOAD_FOLDER
 from models.login.login_validators import LoginValidation, RegisterValidation, NewPasswordValidation, ChangeUserDataValidation
 from werkzeug.datastructures import CombinedMultiDict
-from models.login.login_functions import login_required
+from models.login.login_functions import login_required, change_file_name
 from models.database import db_models
-import flask
 
+import flask
+import os
+import glob
 # blueprint
 lg = flask.Blueprint('lg', __name__, template_folder='./templates', static_folder='./static')
 
@@ -31,7 +34,8 @@ def register():
         new_user = db_models.User(username=name, password=password)
         db_models.db.session.add(new_user)
         db_models.db.session.commit()
-        avatar.save(flask.current_app.config["UPLOAD_FOLDER"] + "/" + f"{name}.jpg")
+        # avatar.save(flask.current_app.config["UPLOAD_FOLDER"] + "/" + f"{name}.jpg")
+        avatar.save(flask.current_app.config["UPLOAD_FOLDER"] + "/" + "avatars" + "/" + f"{name}.jpg")
         name = None
     return flask.render_template("register.html", isRegister=True, form=form, name=name)
 
@@ -79,9 +83,7 @@ def change_user_data():
             db_models.User.query.filter(db_models.User.username == str(flask.session['name'])).update({'username': new_name})
             db_models.db.session.commit()
         if avatar:
-            db_models.User.query.filter(db_models.User.username == str(new_name)).update({'username': new_name})
-            db_models.db.session.commit()
-        # flask.session['name'] = flask.request.form.get('new_name')
+            change_file_name(os.path.join(UPLOAD_FOLDER, 'avatars'), flask.session['name'], new_name)
         if new_name and avatar:
             flask.session['name'] = new_name
             flask.flash(f"You have just changed your name and avatar.")

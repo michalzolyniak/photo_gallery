@@ -114,7 +114,7 @@
         <div class="container">
           {% if user.is_login %}
             <a href="#" class="navbar-brand d-flex align-items-center">
-            <img src="{{url_for('gl.uploaded', filename=user.avatar)}}" height="100" width="100"
+            <img src="{{url_for('gl.uploaded_avatar', filename=user.avatar)}}" height="100" width="100"
             alt="awatar użytkownika {{user.name}}">
               <strong> &nbsp;&nbsp; &nbsp;&nbsp; {{user.name}}</strong>
             </a>
