@@ -58,12 +58,13 @@
                 <li><a href="michalzolyniak@o2.pl" class="text-white">Email me</a></li>
               </ul>
                 <h4 class="text-white">Action</h4>
-                {% if isNewPhoto or isNewCategory or isSettings or isNewPassword or isRemoveAccount %}
+                {% if isNewPhoto or isNewCategory or isSettings or isNewPassword or
+                isRemoveAccount or isUserData %}
                     <ul class="list-unstyled">
                         <li><a href="{{ url_for('gl.gallery') }}">Gallery</a></li>
                     </ul>
                 {% endif %}
-                {% if isGallery or isSettings or isNewPassword or isRemoveAccount%}
+                {% if isGallery or isSettings or isNewPassword or isRemoveAccount or isUserData %}
                     <ul class="list-unstyled">
                         <li><a href="{{ url_for('gl.add_photo') }}">Add new photo</a></li>
                         <br>
@@ -89,7 +90,7 @@
                     </ul>
                 {% endif %}
 
-                {% if isGallery or isNewPhoto or isNewCategory or isNewPassword %}
+                {% if isGallery or isNewPhoto or isNewCategory or isNewPassword or isUserData %}
                     <ul class="list-unstyled">
                         <li><a href="{{ url_for('lg.user_settings') }}">User settings</a></li>
                     </ul>
