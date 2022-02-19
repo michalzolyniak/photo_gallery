@@ -3,12 +3,11 @@ from models.database import db_models
 from constants import UPLOAD_FOLDER
 from models.login.login_validators import LoginValidation, RegisterValidation, NewPasswordValidation, ChangeUserDataValidation
 from werkzeug.datastructures import CombinedMultiDict
-from models.login.login_functions import login_required, change_file_name
+from models.login.login_functions import login_required, change_file_name, remove_file
 from models.database import db_models
-
 import flask
 import os
-import glob
+
 # blueprint
 lg = flask.Blueprint('lg', __name__, template_folder='./templates', static_folder='./static')
 
@@ -34,7 +33,6 @@ def register():
         new_user = db_models.User(username=name, password=password)
         db_models.db.session.add(new_user)
         db_models.db.session.commit()
-        # avatar.save(flask.current_app.config["UPLOAD_FOLDER"] + "/" + f"{name}.jpg")
         avatar.save(flask.current_app.config["UPLOAD_FOLDER"] + "/" + "avatars" + "/" + f"{name}.jpg")
         name = None
     return flask.render_template("register.html", isRegister=True, form=form, name=name)
@@ -82,8 +80,14 @@ def change_user_data():
         if new_name:
             db_models.User.query.filter(db_models.User.username == str(flask.session['name'])).update({'username': new_name})
             db_models.db.session.commit()
-        if avatar:
             change_file_name(os.path.join(UPLOAD_FOLDER, 'avatars'), flask.session['name'], new_name)
+        if avatar:
+            remove_file(os.path.join(UPLOAD_FOLDER, 'avatars'), flask.session['name'])
+            if new_name:
+                name = new_name
+            else:
+                name = flask.session['name']
+            avatar.save(flask.current_app.config["UPLOAD_FOLDER"] + "/" + "avatars" + "/" + f"{name}.jpg")
         if new_name and avatar:
             flask.session['name'] = new_name
             flask.flash(f"You have just changed your name and avatar.")

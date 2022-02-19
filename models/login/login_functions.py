@@ -28,3 +28,16 @@ def change_file_name(file_path: str, file_name_find: str, new_file_name) -> bool
             os.rename(old_file, new_file)
             return True
     return False
+
+
+def remove_file(file_path: str, file_name_find: str) -> bool:
+    """
+    :param file_path: file path to search
+    :param file_name_find: file name to find
+    :return:True when file file_name was deleted
+    """
+    for f in os.listdir(file_path):
+        if f.startswith(file_name_find):
+            os.remove(os.path.join(file_path, f))
+            return True
+    return False
